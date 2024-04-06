@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  react-app:
+    build:
+      context: "./react"
+      dockerfile: "Dockerfile"
+    ports:
+      - 3000:3000
+    volumes:
+      - ./react/app:/app
+    environment:
+      - NODE_ENV=development
+
+  nginx:
+    build:
+      context: "./nginx"
+      dockerfile: "Dockerfile"
+    volumes:
+      - ./react/app:/app
+      - ./nginx:/var/www/html
+    ports:
+      - "80:80"
+    depends_on:
+      - react-app
